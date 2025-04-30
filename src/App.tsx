@@ -3,7 +3,8 @@ import { Route, Routes } from 'react-router';
 import HomePage from './pages/home';
 import ManagePricingPage from './pages/manage-pricing';
 import Header from './components/Header';
-import NotFoundPage from './pages/404.tsx';
+import NotFoundPage from './pages/404';
+import { Basket } from './components/Basket';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/manage-pricing" element={<ManagePricingPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <Basket />
     </>
   );
 }

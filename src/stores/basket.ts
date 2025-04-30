@@ -4,6 +4,8 @@ import { ProductInterface } from '../types/product.ts';
 import { LineItemType } from '../types/basket.ts';
 
 interface BasketStoreState {
+  open: boolean;
+  toggleBasket: (open?: boolean) => void;
   items: LineItemType[];
   addItem: (sku: string, qty: number, product?: ProductInterface) => void;
   updateItem: (sku: string, qty: number, product?: ProductInterface) => void;
@@ -16,6 +18,7 @@ interface BasketStoreState {
 export const useBasketStore = create<BasketStoreState>()(
   persist(
     (set) => ({
+      open: false,
       items: [],
       addItem: (sku, qty, product) =>
         set((state) => {
@@ -69,10 +72,17 @@ export const useBasketStore = create<BasketStoreState>()(
           return {
             items: state.items.filter((i) => i.sku === sku)
           };
+        }),
+
+      toggleBasket: (open?: boolean) =>
+        set((state) => {
+          return {
+            open: open === undefined ? !state.open : open
+          };
         })
     }),
     {
-      name: 'products-storage'
+      name: 'basket-storage'
     }
   )
 );

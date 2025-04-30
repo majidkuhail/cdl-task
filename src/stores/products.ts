@@ -7,6 +7,7 @@ const initialData: ProductInterface[] = [
   {
     name: 'Product A',
     sku: 'A',
+    image: '/images/products/product-a.jpeg',
     price: 50,
     volume_pricing: {
       amount: 3,
@@ -16,6 +17,7 @@ const initialData: ProductInterface[] = [
   {
     name: 'Product B',
     sku: 'B',
+    image: '/images/products/product-b.jpeg',
     price: 30,
     volume_pricing: {
       amount: 2,
@@ -25,12 +27,14 @@ const initialData: ProductInterface[] = [
   {
     name: 'Product C',
     sku: 'C',
+    image: '/images/products/product-c.jpeg',
     price: 20,
     volume_pricing: null
   },
   {
     name: 'Product D',
     sku: 'D',
+    image: '/images/products/product-d.jpeg',
     price: 15,
     volume_pricing: null
   }
