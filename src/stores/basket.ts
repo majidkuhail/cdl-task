@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { ProductInterface } from '../types/product.ts';
-import { LineItemType } from '../types/basket.ts';
+import { ComputedLineItemType, LineItemType } from '../types/basket.ts';
 
 interface BasketStoreState {
   open: boolean;
@@ -52,7 +52,7 @@ export const useBasketStore = create<BasketStoreState>()(
               items[existingIndex].qty = qty;
             } else {
               // Qty is zero so remove item
-              items = items.filter((i) => i.sku === sku);
+              items = items.filter((i) => i.sku !== sku);
             }
           } else {
             // Not there, add new item
@@ -70,7 +70,7 @@ export const useBasketStore = create<BasketStoreState>()(
       removeItem: (sku) =>
         set((state) => {
           return {
-            items: state.items.filter((i) => i.sku === sku)
+            items: state.items.filter((i) => i.sku !== sku)
           };
         }),
 
@@ -86,3 +86,36 @@ export const useBasketStore = create<BasketStoreState>()(
     }
   )
 );
+
+export const useBasketComputedItems = (): ComputedLineItemType[] => {
+  const store = useBasketStore();
+  return store.items.map((item) => {
+    const product = item.product;
+    if (!product) {
+      return {
+        ...item,
+        original_subtotal_price: 0,
+        subtotal_price: 0
+      };
+    }
+    const original_subtotal_price = product.price * item.qty;
+    let subtotal_price = original_subtotal_price;
+    if (product.volume_pricing?.amount && item.qty >= product.volume_pricing?.amount) {
+      const groupCount = Math.floor(item.qty / product.volume_pricing.amount);
+      console.log('item.qty', item.qty);
+      console.log('product.volume_pricing.amount', product.volume_pricing.amount);
+      console.log('groupCount', groupCount);
+      const remaining = item.qty % product.volume_pricing.amount;
+      console.log('remaining', remaining);
+      if (groupCount > 0) {
+        subtotal_price =
+          groupCount * product.volume_pricing.total_price + remaining * product.price;
+      }
+    }
+    return {
+      ...item,
+      original_subtotal_price,
+      subtotal_price
+    };
+  });
+};

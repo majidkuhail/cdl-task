@@ -2,10 +2,11 @@ import { tv, VariantProps } from 'tailwind-variants';
 import * as React from 'react';
 import { FC, useEffect } from 'react';
 import { cn } from '../../utils/style.ts';
+import { useSpring, animated, config } from '@react-spring/web';
 
 const variants = tv({
   slots: {
-    base: 'fixed z-1000 bg-gray-800/70 backdrop-blur-md inset-0 transition ease-in-out data-[state=closed]:duration-300 data-[state=open]:duration-500 data-[state=open]:animate-in data-[state=closed]:animate-out',
+    base: 'fixed z-1000 bg-gray-800/70 backdrop-blur-md inset-0',
     inner: 'w-11/12 max-w-lg z-20 relative h-screen bg-background p-6 shadow-xl'
   },
   variants: {
@@ -35,7 +36,17 @@ interface DrawerProps extends VariantProps<typeof variants> {
 }
 
 const Drawer: FC<DrawerProps> = (props: DrawerProps) => {
-  const { open, onClose, children, position, className, innerClassName } = props;
+  const { open, onClose, children, position = 'right', className, innerClassName } = props;
+
+  const { anim } = useSpring({
+    config: config.stiff,
+    from: {
+      anim: 0
+    },
+    to: {
+      anim: open ? 1 : 0
+    }
+  });
 
   useEffect(() => {
     if (open) {
@@ -47,17 +58,17 @@ const Drawer: FC<DrawerProps> = (props: DrawerProps) => {
 
   const cls = variants();
   return (
-    <div
-      className={cn(
-        cls.base({ position }),
-        {
-          hidden: !open
-        },
-        className
-      )}>
+    <animated.div
+      aria-hidden={open ? 'true' : 'false'}
+      style={{ opacity: anim, display: anim.to((t) => (t == 0 ? 'none' : 'block')) }}
+      className={cn(cls.base({ position }), className)}>
       <div className="absolute inset-0 z-0" onClick={onClose}></div>
-      <div className={cn(cls.inner({ position }), innerClassName)}>{children}</div>
-    </div>
+      <animated.div
+        style={{ translateX: anim.to((t) => `${(1 - t) * 100}%`) }}
+        className={cn(cls.inner({ position }), innerClassName)}>
+        {children}
+      </animated.div>
+    </animated.div>
   );
 };
 

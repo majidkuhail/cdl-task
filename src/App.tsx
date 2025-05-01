@@ -5,6 +5,7 @@ import ManagePricingPage from './pages/manage-pricing';
 import Header from './components/Header';
 import NotFoundPage from './pages/404';
 import { Basket } from './components/Basket';
+import Footer from './components/Footer';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Basket />
+      <Footer />
     </>
   );
 }

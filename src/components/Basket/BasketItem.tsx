@@ -1,18 +1,38 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useBasketStore } from '../../stores/basket';
-import { LineItemType } from '../../types/basket.ts';
+import { ComputedLineItemType } from '../../types/basket.ts';
 import { useProductsStore } from '../../stores/products.ts';
 import { formatPrice } from '../../utils/price.ts';
+import QuantityInput from '../ui/QuantityInput.tsx';
+import { Trash } from 'lucide-react';
+import Button from '../ui/Button.tsx';
 
 type BasketItemProps = {
-  item: LineItemType;
+  item: ComputedLineItemType;
 };
+
 const BasketItem: FC<BasketItemProps> = (props) => {
   const { item } = props;
+  const [qty, setQty] = useState(item.qty);
   const productsStore = useProductsStore();
   const basketStore = useBasketStore();
 
   const product = item.product ?? productsStore.products.find((p) => p.sku === item.sku);
+
+  const handleRemove = () => {
+    basketStore.removeItem(item.sku);
+  };
+
+  useEffect(() => {
+    setQty(item.qty);
+  }, [item]);
+
+  useEffect(() => {
+    if (qty !== item.qty) {
+      basketStore.updateItem(item.sku, qty);
+    }
+  }, [qty]);
+
   return (
     <div className="flex gap-4">
       <div className="flex-none">
@@ -27,12 +47,29 @@ const BasketItem: FC<BasketItemProps> = (props) => {
         </div>
       </div>
       <div className="flex-auto pt-2">
-        <p className="text-base font-medium">{product?.name}</p>
-        <p className="text-muted-foreground text-sm">Quantity: {item.qty}</p>
+        <p className="mb-2 text-base font-medium">{product?.name}</p>
+        <div className="flex items-end gap-2">
+          <div className="block flex-none">
+            <label className="text-muted-foreground mb-0.5 block text-xs font-bold">
+              Quantity:
+            </label>
+            <QuantityInput value={qty} onChange={setQty} />
+          </div>
+          <div className="flex-none">
+            <Button size="icon" variant="destructive" onClick={handleRemove}>
+              <Trash className="size-5" />
+            </Button>
+          </div>
+        </div>
       </div>
-      <div className="flex-none pt-2">
-        {product?.price && (
-          <span className="text-sm font-medium">{formatPrice(item.qty * product?.price)}</span>
+      <div className="flex-none pt-2 text-end">
+        {item.subtotal_price !== item.original_subtotal_price && (
+          <span className="text-muted-foreground block text-xs font-medium line-through">
+            {formatPrice(item.original_subtotal_price)}
+          </span>
+        )}
+        {item.subtotal_price && (
+          <span className="block text-sm font-medium">{formatPrice(item.subtotal_price)}</span>
         )}
       </div>
     </div>
