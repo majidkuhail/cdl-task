@@ -34,7 +34,7 @@ const BasketItem: FC<BasketItemProps> = (props) => {
   }, [qty]);
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4" data-testid={`basket-item-${item.sku}`}>
       <div className="flex-none">
         <div className="bg-accent relative aspect-square w-24 overflow-hidden rounded-lg">
           {product?.image && (

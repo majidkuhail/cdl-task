@@ -24,9 +24,15 @@ const Basket: FC = () => {
   const discount = subtotal - total;
 
   return (
-    <Drawer open={basketStore.open} onClose={handleClose} innerClassName="flex flex-col gap-2">
+    <Drawer
+      open={basketStore.open}
+      onClose={handleClose}
+      innerClassName="flex flex-col gap-2"
+      data-testid="basket">
       <div className="border-b-border mb-4 flex w-full shrink-0 grow-0 items-start border-b pb-4">
-        <h2 className="flex-auto text-2xl font-bold">Basket</h2>
+        <h2 className="flex-auto text-2xl font-bold" data-testid="basket-heading">
+          Basket
+        </h2>
         <Button size="icon" variant="ghost" onClick={handleClose}>
           <CloseIcon />
         </Button>
@@ -49,13 +55,17 @@ const Basket: FC = () => {
               <div className="w-full flex-none">
                 <dl className="flex items-start gap-2 text-sm">
                   <dt className="flex-auto text-start">Subtotal</dt>
-                  <dd className="flex-none text-end">{formatPrice(subtotal)}</dd>
+                  <dd className="flex-none text-end" data-testid="basket-subtotal">
+                    {formatPrice(subtotal)}
+                  </dd>
                 </dl>
               </div>
               <div className="w-full flex-none">
                 <dl className="flex items-start gap-2 text-sm">
                   <dt className="flex-auto text-start">Volume discount</dt>
-                  <dd className="flex-none text-end">-{formatPrice(discount)}</dd>
+                  <dd className="flex-none text-end" data-testid="basket-discount">
+                    -{formatPrice(discount)}
+                  </dd>
                 </dl>
               </div>
             </>
@@ -63,7 +73,9 @@ const Basket: FC = () => {
           <div className="w-full flex-none">
             <dl className="flex items-start gap-2 text-lg font-bold">
               <dt className="flex-auto text-start">Total</dt>
-              <dd className="flex-none text-end">{formatPrice(total)}</dd>
+              <dd className="flex-none text-end" data-testid="basket-total">
+                {formatPrice(total)}
+              </dd>
             </dl>
           </div>
           <div className="mt-4 w-full flex-none">

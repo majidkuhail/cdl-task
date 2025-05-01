@@ -39,7 +39,9 @@ const ProductCard: FC<ProductCardProps> = (props) => {
         )}
 
         {product.volume_pricing && (
-          <span className="absolute end-1 bottom-1 z-20 inline-flex w-auto items-center gap-1 rounded-md bg-emerald-500/20 px-2 py-0.5 text-sm backdrop-blur-lg">
+          <span
+            className="absolute end-1 bottom-1 z-20 inline-flex w-auto items-center gap-1 rounded-md bg-emerald-500/20 px-2 py-0.5 text-sm backdrop-blur-lg"
+            title={`Buy ${product.volume_pricing.amount} for ${formatPrice(product.volume_pricing.total_price)}`}>
             <span>Buy </span>
             <strong>{product.volume_pricing.amount}</strong>
             <span> for </span>
