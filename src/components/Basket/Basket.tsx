@@ -14,13 +14,17 @@ const Basket: FC = () => {
     basketStore.toggleBasket(false);
   }, [basketStore]);
 
+  // Subtotal without volume discount
   const subtotal = computedItems.reduce((acc, item) => {
     return acc + item.original_subtotal_price;
   }, 0);
 
+  // Total with volume discount
   const total = computedItems.reduce((acc, item) => {
     return acc + item.subtotal_price;
   }, 0);
+
+  // Discount amount
   const discount = subtotal - total;
 
   return (

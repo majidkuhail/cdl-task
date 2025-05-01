@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { useBasketStore } from '../../stores/basket';
 import { ComputedLineItemType } from '../../types/basket.ts';
 import { useProductsStore } from '../../stores/products.ts';
@@ -19,9 +19,9 @@ const BasketItem: FC<BasketItemProps> = (props) => {
 
   const product = item.product ?? productsStore.products.find((p) => p.sku === item.sku);
 
-  const handleRemove = () => {
+  const handleRemove = useCallback(() => {
     basketStore.removeItem(item.sku);
-  };
+  }, [basketStore, item]);
 
   useEffect(() => {
     setQty(item.qty);

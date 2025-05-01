@@ -95,6 +95,9 @@ export const useBasketStore = create<BasketStoreState>()(
   )
 );
 
+/**
+ * Returns basket itesm with totals calculated
+ */
 export const useBasketComputedItems = (): ComputedLineItemType[] => {
   const store = useBasketStore();
   return store.items.map((item) => {
@@ -106,12 +109,18 @@ export const useBasketComputedItems = (): ComputedLineItemType[] => {
         subtotal_price: 0
       };
     }
+    // Original total price without volume discount
     const original_subtotal_price = product.price * item.qty;
     let subtotal_price = original_subtotal_price;
+
+    // Check if product has volume pricing and the qty passes the volume pricing threshold amount
     if (product.volume_pricing?.amount && item.qty >= product.volume_pricing?.amount) {
+      // Number of discount sets
       const groupCount = Math.floor(item.qty / product.volume_pricing.amount);
+      // Remainder items that dont qualify for discount
       const remaining = item.qty % product.volume_pricing.amount;
       if (groupCount > 0) {
+        // Return total of discount sets and remainder og prices
         subtotal_price =
           groupCount * product.volume_pricing.total_price + remaining * product.price;
       }

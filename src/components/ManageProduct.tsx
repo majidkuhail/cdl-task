@@ -24,6 +24,9 @@ const ManageProduct: FC<ManageProductProps> = (props) => {
   const productsStore = useProductsStore();
   const basketStore = useBasketStore();
 
+  /**
+   * Transform product object to form fields
+   */
   const productToForm = (product: ProductInterface): FormType => {
     return {
       name: product.name,
