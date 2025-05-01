@@ -4,7 +4,7 @@ import type { ForwardedRef, LegacyRef, MutableRefObject, RefCallback } from 'rea
  * Can be used to assign multiple refs to the same element
  * @param refs
  */
-export function mergeRefs<T = any>(
+export function mergeRefs<T = never>(
   ...refs: Array<MutableRefObject<T> | LegacyRef<T> | ForwardedRef<T> | undefined | null>
 ): RefCallback<T> {
   return (value) => {

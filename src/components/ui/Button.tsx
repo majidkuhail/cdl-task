@@ -65,6 +65,7 @@ const Button: React.FC<ButtonProps> = React.forwardRef<HTMLButtonElement, Button
       ...rest
     } = props;
 
+    // eslint-disable-next-line
     const Comp: any = href ? 'a' : (as ?? 'button');
 
     return (
