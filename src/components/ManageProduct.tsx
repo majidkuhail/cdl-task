@@ -4,6 +4,7 @@ import Input from './ui/Input.tsx';
 import Toggle from './ui/Toggle.tsx';
 import Button from './ui/Button.tsx';
 import { useProductsStore } from '../stores/products.ts';
+import { useBasketStore } from '../stores/basket.ts';
 
 type ManageProductProps = {
   product: ProductInterface;
@@ -21,6 +22,7 @@ type FormType = {
 const ManageProduct: FC<ManageProductProps> = (props) => {
   const { product } = props;
   const productsStore = useProductsStore();
+  const basketStore = useBasketStore();
 
   const productToForm = (product: ProductInterface): FormType => {
     return {
@@ -62,6 +64,8 @@ const ManageProduct: FC<ManageProductProps> = (props) => {
           }
         : null
     });
+
+    basketStore.clear();
   };
 
   return (

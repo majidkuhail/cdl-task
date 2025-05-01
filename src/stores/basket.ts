@@ -10,6 +10,7 @@ interface BasketStoreState {
   addItem: (sku: string, qty: number, product?: ProductInterface) => void;
   updateItem: (sku: string, qty: number, product?: ProductInterface) => void;
   removeItem: (sku: string) => void;
+  clear: () => void;
 }
 
 /**
@@ -71,6 +72,13 @@ export const useBasketStore = create<BasketStoreState>()(
         set((state) => {
           return {
             items: state.items.filter((i) => i.sku !== sku)
+          };
+        }),
+
+      clear: () =>
+        set(() => {
+          return {
+            items: []
           };
         }),
 

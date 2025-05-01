@@ -59,7 +59,6 @@ const Drawer: FC<DrawerProps> = (props: DrawerProps) => {
   const cls = variants();
   return (
     <animated.div
-      aria-hidden={open ? 'true' : 'false'}
       style={{ opacity: anim, display: anim.to((t) => (t == 0 ? 'none' : 'block')) }}
       className={cn(cls.base({ position }), className)}>
       <div className="absolute inset-0 z-0" onClick={onClose}></div>
