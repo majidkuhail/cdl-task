@@ -102,11 +102,7 @@ export const useBasketComputedItems = (): ComputedLineItemType[] => {
     let subtotal_price = original_subtotal_price;
     if (product.volume_pricing?.amount && item.qty >= product.volume_pricing?.amount) {
       const groupCount = Math.floor(item.qty / product.volume_pricing.amount);
-      console.log('item.qty', item.qty);
-      console.log('product.volume_pricing.amount', product.volume_pricing.amount);
-      console.log('groupCount', groupCount);
       const remaining = item.qty % product.volume_pricing.amount;
-      console.log('remaining', remaining);
       if (groupCount > 0) {
         subtotal_price =
           groupCount * product.volume_pricing.total_price + remaining * product.price;

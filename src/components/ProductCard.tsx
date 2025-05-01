@@ -52,7 +52,7 @@ const ProductCard: FC<ProductCardProps> = (props) => {
         <h3 className="flex-auto text-base font-medium md:text-lg">{product.name}</h3>
         <p className="flex-none">{formatPrice(product.price)}</p>
       </div>
-      <form className="mt-3 flex items-center gap-1" onSubmit={handleAddToBasket}>
+      <form className="mt-3 flex items-center gap-1.5" onSubmit={handleAddToBasket}>
         <div className="flex-none">
           <QuantityInput value={qty} onChange={setQty} />
         </div>
